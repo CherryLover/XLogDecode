@@ -1,6 +1,6 @@
 # XLog Decode
 
-XLog 的解码服务，可解码不加密、加密两种。
+XLog 的解码服务，可解码不加密、加密两种。解码加密的日志需要更新 XlogFileDecoder 类中的公钥和私钥。
 
 核心代码来自：https://github.com/wustMeiming/XlogDecoder
 
