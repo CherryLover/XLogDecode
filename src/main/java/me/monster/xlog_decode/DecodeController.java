@@ -1,5 +1,7 @@
 package me.monster.xlog_decode;
 
+import me.monster.xlog_decode.bean.KeyPair;
+import me.monster.xlog_decode.tool.ECDHUtils;
 import me.monster.xlog_decode.tool.XlogFileDecoder;
 import me.monster.xlog_decode.tool.ZipUtil;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,11 @@ public class DecodeController {
     @GetMapping("/hello")
     public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/generateKeyPair")
+    public KeyPair generateKey() {
+        return ECDHUtils.generateKeyPair();
     }
 
     @PostMapping("/decode")

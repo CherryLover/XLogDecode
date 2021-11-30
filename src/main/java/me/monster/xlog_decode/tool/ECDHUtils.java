@@ -8,10 +8,8 @@ import org.bouncycastle.jce.spec.ECPublicKeySpec;
 
 import javax.crypto.KeyAgreement;
 import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
+import java.security.*;
+import java.security.spec.ECGenParameterSpec;
 
 public class ECDHUtils {
 
@@ -25,6 +23,29 @@ public class ECDHUtils {
                 params.getCurve().decodePoint(data), params);
         KeyFactory kf = KeyFactory.getInstance("ECDH", "BC");
         return kf.generatePublic(pubKey);
+    }
+
+    /**
+     * SM2算法生成密钥对
+     *
+     * @return 密钥对信息
+     */
+    public static me.monster.xlog_decode.bean.KeyPair generateKeyPair() {
+        try {
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
+            ECGenParameterSpec ecGenParameterSpec = new ECGenParameterSpec("secp256k1");
+            generator.initialize(ecGenParameterSpec, new SecureRandom());
+            generator.initialize(256);
+            final KeyPair keyPair = generator.generateKeyPair();
+            final String pub = CommonUtils.bytesToHexString(keyPair.getPrivate().getEncoded());
+            System.out.println("priKey：" + pub);
+            final String pri = CommonUtils.bytesToHexString(keyPair.getPublic().getEncoded());
+            System.out.println("pubKey：" + pri);
+            return new me.monster.xlog_decode.bean.KeyPair(pub, pri);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new me.monster.xlog_decode.bean.KeyPair("pub", "pri");
+        }
     }
 
     public static PrivateKey loadPrivateKey(byte[] data) throws Exception {
